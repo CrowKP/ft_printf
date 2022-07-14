@@ -1,16 +1,16 @@
 NAME = libftprintf.a
 
+INCLUDE = include
 RM = rm -f
 AR = ar rcs
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -I
 FILES = ft_printf.c 
 OBJS = $(FILES:.c=.o)
 LIB_DIR = lib/
 CC = gcc
-HEADER = ft_printf.h
 
 .c.o:
-	$(CC) $(CFLAGS) -g -c $< -o $(<:.c=.o)
+	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $(<:.c=.o)
 
 all: ${NAME}
 
@@ -21,10 +21,10 @@ ${NAME}: $(OBJS)
 	$(AR) $(NAME) $(OBJS)
 
 clean:
-		$(RM) $(OBJS) $(BOBJS)
+	$(RM) $(OBJS) $(BOBJS)
 
 fclean: clean
-		$(RM) ${NAME}
+	$(RM) ${NAME}
 
 re: fclean all
 

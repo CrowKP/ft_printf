@@ -1,5 +1,12 @@
 #include "ft_printf.h"
+#include "libft.h"
 #include <stdarg.h>
+#include <stdio.h>
+
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}
 
 int	ft_putchar(int c)
 {
@@ -21,7 +28,7 @@ void	ft_putstr(char *str)
 
 int	ft_printstr(char *str)
 {
-	int it;
+	int	it;
 
 	it = 0;
 	if (str == 0)
@@ -37,6 +44,51 @@ int	ft_printstr(char *str)
 	return (it);
 }
 
+int	ft_ptrlen(unsigned long long it)
+{
+	int	len;
+
+	len = 0;
+	while (it != 0)
+	{
+		it++;
+		it = it / 16;
+	}
+	return (len);
+}
+
+void	ft_putptr(unsigned long long ptr)
+{
+	if (ptr >= 16)
+	{
+		ft_putptr(ptr / 16);
+		ft_putptr(ptr % 16);
+	}
+	else
+	{
+		if (ptr <= 9)
+			ft_putchar_fd((ptr + '0'), 1);
+		else
+			ft_putchar_fd((ptr - 10 + 'a'), 1);
+	}
+}
+
+int	ft_printptr(unsigned long long ptr)
+{
+	int	done;
+
+	done = 0;
+	done += write(1, "0x", 2);
+	if (ptr == 0)
+		done += write(1, "0", 1);
+	else
+	{
+		ft_putptr(ptr);
+		done += ft_ptrlen(ptr);
+	}
+	return (done);
+}
+
 int	ft_formats(va_list args, const char format)
 {
 	int	done;
@@ -46,6 +98,8 @@ int	ft_formats(va_list args, const char format)
 		done += ft_putchar(va_arg(args, int));
 	else if (format == 's')
 		done += ft_printstr(va_arg(args, char*));
+	else if (format == 'p')
+		done += ft_printptr(va_arg(args, unsigned long long));
 	return (done);
 }
 
@@ -75,6 +129,8 @@ int	ft_printf(const char *format, ...)
 
 int main()
 {
-	ft_printf("%s", "Hello World");
-	ft_printf("%c", '\n');
+	char *b;
+
+	printf("%p\n", &b);
+	ft_printf("%p\n", &b);
 }
