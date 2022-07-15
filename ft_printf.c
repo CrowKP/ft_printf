@@ -89,6 +89,24 @@ int	ft_printptr(unsigned long long ptr)
 	return (done);
 }
 
+int	ft_printnbr(int n)
+{
+	int		done;
+	char	*num;
+
+	done = 0;
+	num = ft_itoa(n);
+	done = ft_printstr(num);
+	free(num);
+	return (done);
+}
+
+int	ft_printnosign(unsigned int n)
+{
+	int		done;
+	char*	num;
+}
+
 int	ft_formats(va_list args, const char format)
 {
 	int	done;
@@ -100,6 +118,10 @@ int	ft_formats(va_list args, const char format)
 		done += ft_printstr(va_arg(args, char*));
 	else if (format == 'p')
 		done += ft_printptr(va_arg(args, unsigned long long));
+	else if (format == 'd' || format == 'i')
+		done += ft_printnbr(va_arg(args, int));
+	else if (format == 'u')
+		done += ft_printnosign(va_arg(args, unsigned int));
 	return (done);
 }
 
@@ -129,8 +151,9 @@ int	ft_printf(const char *format, ...)
 
 int main()
 {
-	char *b;
+	int	b;
 
-	printf("%p\n", &b);
-	ft_printf("%p\n", &b);
+	b = 41465;
+	printf("%d\n", b);
+	ft_printf("%d\n", b);
 }
