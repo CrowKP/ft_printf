@@ -4,7 +4,7 @@ INCLUDE = include
 RM = rm -f
 AR = ar rcs
 CFLAGS = -Wall -Werror -Wextra -I
-FILES = ft_printf.c 
+FILES = ft_printf.c ft_print_nosign.c ft_printf_others.c ft_print_ptr.c ft_print_hex.c
 OBJS = $(FILES:.c=.o)
 LIB_DIR = lib/
 CC = gcc
