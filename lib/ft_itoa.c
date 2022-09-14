@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aigarcia <aigarcia@student.42barc...>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/01 15:29:13 by aigarcia          #+#    #+#             */
-/*   Updated: 2022/07/01 15:29:14 by aigarcia         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 #include "libft.h"
 
 static char	*swap(char *str, long int n, int it)
@@ -48,7 +37,10 @@ char	*ft_itoa(int n)
 	it = len(nn);
 	str = (char *)malloc(sizeof(char) * (it + 1));
 	if (!str)
+	{
+		free(str);
 		return (0);
+	}
 	str[it--] = '\0';
 	if (nn == 0)
 		str[0] = 48;

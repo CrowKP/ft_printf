@@ -6,7 +6,7 @@
 /*   By: aigarcia <aigarcia@student.42barc...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 15:58:07 by aigarcia          #+#    #+#             */
-/*   Updated: 2022/08/18 15:58:09 by aigarcia         ###   ########.fr       */
+
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf.h"
@@ -47,6 +47,8 @@ int	ft_printptr(unsigned long long ptr)
 
 	done = 0;
 	done += write(1, "0x", 2);
+	if (done == -1)
+		return (-1);
 	if (ptr == 0)
 		done += write(1, "0", 1);
 	else
