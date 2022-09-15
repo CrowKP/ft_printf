@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aigarcia <aigarcia@student.42barc...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/18 15:58:17 by aigarcia          #+#    #+#             */
-/*   Updated: 2022/08/18 15:58:18 by aigarcia         ###   ########.fr       */
+/*   Created: 2022/09/15 14:36:49 by aigarcia          #+#    #+#             */
+/*   Updated: 2022/09/15 14:36:50 by aigarcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf.h"
@@ -25,38 +25,40 @@ int	ft_numlen(unsigned int num)
 	return (len);
 }
 
-char	*ft_nositoa(unsigned int n)
+int	ft_putnosinbr(unsigned int n)
 {
-	char	*num;
-	int		len;
+	int				it;
+	unsigned int	uint_max;
 
-	len = ft_numlen(n);
-	num = (char *)malloc(sizeof(char) * (len + 1));
-	if (!num)
-		return (0);
-	num[len] = '\0';
-	while (n != 0)
-	{
-		num[len - 1] = n % 10 + 48;
-		n = n / 10;
-		len--;
-	}
-	return (num);
+	it = ft_numlen(n);
+	uint_max = 4294967295;
+	if (n < 0)
+		if (ft_putnosinbr(uint_max - n) == -1)
+			return (-1);
+	if (n > 9)
+		if (ft_putnosinbr(n / 10) == -1)
+			return (-1);
+	if (ft_putchar((n % 10) + '0') == -1)
+		return (-1);
+	return (it);
 }
 
 int	ft_printnosign(unsigned int n)
 {
 	int		len;
-	char	*num;
 
 	len = 0;
 	if (n == 0)
-		len += write(1, "0", 1);
+	{
+		len = ft_putchar('0');
+		if (len == -1)
+			return (-1);
+	}
 	else
 	{
-		num = ft_nositoa(n);
-		len += ft_printstr(num);
-		free(num);
+		len = ft_putnosinbr(n);
+		if (len == -1)
+			return (-1);
 	}
 	return (len);
 }

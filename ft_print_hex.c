@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aigarcia <aigarcia@student.42barc...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/18 15:57:58 by aigarcia          #+#    #+#             */
-/*   Updated: 2022/08/18 15:57:59 by aigarcia         ###   ########.fr       */
+/*   Created: 2022/09/15 14:35:24 by aigarcia          #+#    #+#             */
+/*   Updated: 2022/09/15 14:35:25 by aigarcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf.h"
@@ -25,32 +25,59 @@ int	ft_hexlen(unsigned int num)
 	return (len);
 }
 
-void	ft_put_hex(unsigned int num, const char format)
+int	ft_hexformat(unsigned int num, const char format)
 {
+	int	check;
+
+	check = 1;
+	if (format == 'x')
+		check = ft_putchar(num - 10 + 'a');
+	if (format == 'X')
+		check = ft_putchar(num - 10 + 'A');
+	return (check);
+}
+
+int	ft_put_hex(unsigned int num, const char format)
+{
+	int	it;
+	int	check;
+
+	it = ft_hexlen(num);
 	if (num >= 16)
 	{
-		ft_put_hex(num / 16, format);
-		ft_put_hex(num % 16, format);
+		if (ft_put_hex(num / 16, format) == -1)
+			return (-1);
+		if (ft_put_hex(num % 16, format) == -1)
+			return (-1);
 	}
 	else
 	{
 		if (num <= 9)
-			ft_putchar_fd((num + '0'), 1);
+			check = ft_putchar(num + '0');
 		else
-		{
-			if (format == 'x')
-				ft_putchar_fd((num - 10 + 'a'), 1);
-			if (format == 'X')
-				ft_putchar_fd((num - 10 + 'A'), 1);
-		}
+			check = ft_hexformat(num, format);
+		if (check == -1)
+			return (-1);
 	}
+	return (it);
 }
 
 int	ft_print_hex(unsigned int num, const char format)
 {
+	int	done;
+
+	done = 0;
 	if (num == 0)
-		return (write(1, "0", 1));
+	{
+		if (ft_putchar('0') == -1)
+			return (-1);
+		done++;
+	}
 	else
-		ft_put_hex(num, format);
-	return (ft_hexlen(num));
+	{
+		done = ft_put_hex(num, format);
+		if (done == -1)
+			return (-1);
+	}
+	return (done);
 }
